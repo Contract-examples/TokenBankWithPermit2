@@ -7,6 +7,7 @@ API_KEY_ARBISCAN=your arbiscan api key
 SEPOLIA_WALLET_PRIVATE_KEY=your wallet private key 
 BANK_CONTRACT_ADDRESS=your contract address
 TOKEN_CONTRACT_ADDRESS=your erc20 token address
+RECIPIENT_ADDRESS=recipient address
 ```
 
 
