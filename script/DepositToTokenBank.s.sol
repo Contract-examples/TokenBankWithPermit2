@@ -34,6 +34,10 @@ contract DepositToTokenBankScript is Script {
         uint256 balance = bank.getDepositAmount(userAddress);
         console2.log("User balance in TokenBank:", balance);
 
+        // check bank balance
+        uint256 bankBalance = bank.getBalance();
+        console2.log("Bank balance:", bankBalance); 
+
         vm.stopBroadcast();
     }
 }
