@@ -34,3 +34,8 @@ forge script script/DepositToTokenBank.s.sol:DepositToTokenBankScript --rpc-url 
 ```
 txhash: https://sepolia.arbiscan.io/tx/0x0cb63c35021c74e4a217e87aec795def2f563835359012e466f4c45038ed1648
 
+## Withdraw 1 tokens from Tokenbank
+```
+forge script script/WithdrawFromTokenBank.s.sol:WithdrawFromTokenBankScript --rpc-url arbitrum_sepolia --broadcast -vvvv
+```
+txhash: https://sepolia.arbiscan.io/tx/0x141a51e9894cc0940b58946a0695dfa6bacafe2780cf1f1107ef56384f9af35f
