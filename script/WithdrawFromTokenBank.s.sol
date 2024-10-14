@@ -3,10 +3,10 @@ pragma solidity ^0.8.28;
 
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
-import "../src/TokenBank.sol";
 import "../src/SimpleToken.sol";
+import "../src/TokenBank.sol";
 
-contract DepositToTokenBankScript is Script {
+contract WithdrawFromTokenBankScript is Script {
     function setUp() public { }
 
     function run() public {
@@ -20,15 +20,15 @@ contract DepositToTokenBankScript is Script {
         SimpleToken token = SimpleToken(tokenAddress);
         TokenBank bank = TokenBank(bankAddress);
 
-        uint256 amountToDeposit = 1 * 10 ** 18; // deposit 1 tokens
+        uint256 amountToWithdraw = 1 * 10 ** 18; // withdraw 1 tokens
 
         // approve TokenBank to use tokens
-        token.approve(bankAddress, amountToDeposit);
+        token.approve(bankAddress, amountToWithdraw);
         console2.log("Approved TokenBank to use tokens");
 
-        // deposit tokens to TokenBank
-        bank.deposit(amountToDeposit);
-        console2.log("Deposited tokens to TokenBank");
+        // withdraw tokens from TokenBank
+        bank.withdraw(amountToWithdraw);
+        console2.log("Withdrawn tokens from TokenBank");
 
         // check balance after deposit
         uint256 balance = bank.getDepositAmount(userAddress);
