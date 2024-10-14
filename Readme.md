@@ -1,5 +1,14 @@
 # Token bank
 
+### Create a ``.env`` file
+```
+API_KEY_INFURA=your infura api key 
+API_KEY_ARBISCAN=your arbiscan api key 
+SEPOLIA_WALLET_PRIVATE_KEY=your wallet private key 
+BANK_CONTRACT_ADDRESS=your contract address
+TOKEN_CONTRACT_ADDRESS=your erc20 token address
+```
+
 
 ## Deploy to Arbitrum-Sepolia
 ```
