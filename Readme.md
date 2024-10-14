@@ -27,3 +27,10 @@ forge script script/Deploy.s.sol:DeployTokenBankAndTokenScript --rpc-url arbitru
 forge script script/DistributeSimpleToken.s.sol:DistributeSimpleTokenScript --rpc-url arbitrum_sepolia --broadcast -vvvv
 ```
 txhash: https://sepolia.arbiscan.io/tx/0xdb8efe967a12637d979d2ff48a3d339841469d918bb6d77eda5522445bf3f742
+
+## Deposit 1 tokens to Tokenbank
+```
+forge script script/DepositToTokenBank.s.sol:DepositToTokenBankScript --rpc-url arbitrum_sepolia --broadcast -vvvv
+```
+txhash: https://sepolia.arbiscan.io/tx/0x0cb63c35021c74e4a217e87aec795def2f563835359012e466f4c45038ed1648
+
