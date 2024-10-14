@@ -21,3 +21,8 @@ forge script script/Deploy.s.sol:DeployTokenBankAndTokenScript --rpc-url arbitru
 ## Tokenbank address
 - https://sepolia.arbiscan.io/address/0x0368ad1a77e9e03ff2b34bfc453ae6d166ed6be5#code
 
+## Distribute 1000 tokens to ``0xe091701aC9816D38241887147B41AE312d26e1C3``
+```
+forge script script/DistributeSimpleToken.s.sol:DistributeSimpleTokenScript --rpc-url arbitrum_sepolia --broadcast -vvvv
+```
+txhash: https://sepolia.arbiscan.io/tx/0xdb8efe967a12637d979d2ff48a3d339841469d918bb6d77eda5522445bf3f742
