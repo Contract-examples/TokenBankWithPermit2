@@ -20,7 +20,7 @@ contract DepositToTokenBankScript is Script {
         SimpleToken token = SimpleToken(tokenAddress);
         TokenBank bank = TokenBank(bankAddress);
 
-        uint256 amountToDeposit = 1 * 10 ** 18; // deposit 1 tokens
+        uint256 amountToDeposit = 1 * 10 ** 18; // deposit 1 token
 
         // approve TokenBank to use tokens
         token.approve(bankAddress, amountToDeposit);
