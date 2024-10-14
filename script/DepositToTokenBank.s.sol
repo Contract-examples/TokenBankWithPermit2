@@ -10,7 +10,7 @@ contract DepositToTokenBankScript is Script {
     function setUp() public { }
 
     function run() public {
-        uint256 userPrivateKey = vm.envUint("RECIPIENT_ADDRESS");
+        uint256 userPrivateKey = vm.envUint("RECIPIENT_PRIVATE_KEY");
         address userAddress = vm.addr(userPrivateKey);
         address tokenAddress = vm.envAddress("TOKEN_CONTRACT_ADDRESS");
         address bankAddress = vm.envAddress("BANK_CONTRACT_ADDRESS");
@@ -20,7 +20,7 @@ contract DepositToTokenBankScript is Script {
         SimpleToken token = SimpleToken(tokenAddress);
         TokenBank bank = TokenBank(bankAddress);
 
-        uint256 amountToDeposit = 100 * 10 ** 18; // deposit 100 tokens
+        uint256 amountToDeposit = 1 * 10 ** 18; // deposit 1 tokens
 
         // approve TokenBank to use tokens
         token.approve(bankAddress, amountToDeposit);
