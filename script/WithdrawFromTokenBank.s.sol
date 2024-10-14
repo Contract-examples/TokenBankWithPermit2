@@ -22,9 +22,9 @@ contract WithdrawFromTokenBankScript is Script {
 
         uint256 amountToWithdraw = 1 * 10 ** 18; // withdraw 1 tokens
 
-        // approve TokenBank to use tokens
-        token.approve(bankAddress, amountToWithdraw);
-        console2.log("Approved TokenBank to use tokens");
+        // TokenBank has been approved by default for withdraw
+        // token.approve(bankAddress, amountToWithdraw);
+        // console2.log("Approved TokenBank to use tokens");
 
         // withdraw tokens from TokenBank
         bank.withdraw(amountToWithdraw);
