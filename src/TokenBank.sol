@@ -49,16 +49,16 @@ contract TokenBank {
             revert InsufficientBalance();
         }
 
+        // transfer token from contract to user
+        if (!token.transfer(msg.sender, amount)) {
+            revert TransferFailedForWithdraw();
+        }
+
         // update balance
         balances[msg.sender] -= amount;
 
         // emit event
         emit Withdraw(msg.sender, amount);
-
-        // transfer token from contract to user
-        if (!token.transfer(msg.sender, amount)) {
-            revert TransferFailedForWithdraw();
-        }
     }
 
     // Query contract balance
