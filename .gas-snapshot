@@ -1,2 +1,2 @@
-TokenBankTest:testDeposit() (gas: 78930)
-TokenBankTest:testWithdraw() (gas: 88010)
+TokenBankTest:testDeposit() (gas: 79033)
+TokenBankTest:testWithdraw() (gas: 88183)
