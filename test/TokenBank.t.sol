@@ -2,6 +2,8 @@
 pragma solidity ^0.8.28;
 
 import "forge-std/Test.sol";
+import "forge-std/console2.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "../src/TokenBank.sol";
 import "../src/SimpleToken2612.sol";
 
@@ -46,6 +48,7 @@ contract TokenBankTest is Test {
     function testPermitDeposit() public {
         uint256 depositAmount = 500 * 10 ** 18;
         uint256 deadline = block.timestamp + 1 hours;
+        console2.log("deadline: %d", deadline);
 
         // get the nonce
         uint256 nonce = token.nonces(user1);
@@ -62,13 +65,19 @@ contract TokenBankTest is Test {
                 deadline
             )
         );
+        console2.log("structHash: %s", Strings.toHexString(uint256(structHash)));
 
         // build the digest
         bytes32 domainSeparator = token.DOMAIN_SEPARATOR();
+        console2.log("domainSeparator: %s", Strings.toHexString(uint256(domainSeparator)));
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
+        console2.log("digest: %s", Strings.toHexString(uint256(digest)));
 
         // sign the digest with user1's private key
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(user1PrivateKey, digest);
+        console2.log("v: %d", v);
+        console2.log("r: %s", Strings.toHexString(uint256(r)));
+        console2.log("s: %s", Strings.toHexString(uint256(s)));
 
         // execute permitDeposit
         vm.prank(user1);
