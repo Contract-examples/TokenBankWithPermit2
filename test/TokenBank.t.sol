@@ -49,7 +49,7 @@ contract TokenBankTest is Test {
 
         // get the nonce
         uint256 nonce = token.nonces(user1);
-        console2.log("nonce: %s", nonce);
+        console2.log("nonce: %d", nonce);
 
         // build the permit data
         bytes32 structHash = keccak256(
@@ -63,6 +63,7 @@ contract TokenBankTest is Test {
             )
         );
 
+        // build the digest
         bytes32 domainSeparator = token.DOMAIN_SEPARATOR();
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
 
