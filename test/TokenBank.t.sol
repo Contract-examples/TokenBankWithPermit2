@@ -9,20 +9,17 @@ contract TokenBankTest is Test {
     TokenBank public bank;
     SimpleToken2612 public token;
     address public user1;
-    address public user2;
-    address public user3;
+    uint256 public user1PrivateKey;
 
     function setUp() public {
         token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
         bank = new TokenBank(address(token));
-        user1 = address(0x1);
-        user2 = address(0x2);
-        user3 = address(0x3);
 
-        // transfer token to user1, user2, user3
+        // use a fixed private key to generate the address
+        user1PrivateKey = 0x3389;
+        user1 = vm.addr(user1PrivateKey);
+
         token.transfer(user1, 1000 * 10 ** 18);
-        token.transfer(user2, 2000 * 10 ** 18);
-        token.transfer(user3, 3000 * 10 ** 18);
     }
 
     function testDeposit() public {
@@ -44,5 +41,41 @@ contract TokenBankTest is Test {
 
         assertEq(bank.balances(user1), 250 * 10 ** 18);
         assertEq(token.balanceOf(user1), initialBalance + 250 * 10 ** 18);
+    }
+
+    function testPermitDeposit() public {
+        uint256 depositAmount = 500 * 10 ** 18;
+        uint256 deadline = block.timestamp + 1 hours;
+
+        // get the nonce
+        uint256 nonce = token.nonces(user1);
+        console2.log("nonce: %s", nonce);
+
+        // build the permit data
+        bytes32 structHash = keccak256(
+            abi.encode(
+                keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"),
+                user1,
+                address(bank),
+                depositAmount,
+                nonce,
+                deadline
+            )
+        );
+
+        bytes32 domainSeparator = token.DOMAIN_SEPARATOR();
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
+
+        // sign the digest with user1's private key
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(user1PrivateKey, digest);
+
+        // execute permitDeposit
+        vm.prank(user1);
+        bank.permitDeposit(depositAmount, deadline, v, r, s);
+
+        // verify the result
+        assertEq(bank.balances(user1), depositAmount, "Deposit amount should match");
+        assertEq(token.balanceOf(address(bank)), depositAmount, "Bank should have received the tokens");
+        assertEq(token.balanceOf(user1), 500 * 10 ** 18, "User1 should have 500 tokens left");
     }
 }
