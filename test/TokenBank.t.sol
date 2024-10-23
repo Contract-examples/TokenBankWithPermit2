@@ -38,6 +38,8 @@ contract TokenBankTest is Test {
         token.approve(address(bank), 500 * 10 ** 18);
         bank.deposit(500 * 10 ** 18);
         uint256 initialBalance = token.balanceOf(user1);
+
+        // no need to call approve, because the bank is the spender
         bank.withdraw(250 * 10 ** 18);
         vm.stopPrank();
 
