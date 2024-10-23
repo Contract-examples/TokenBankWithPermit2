@@ -75,7 +75,7 @@ contract TokenBankTest is Test {
 
         // sign the digest with user1's private key
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(user1PrivateKey, digest);
-        console2.log("v: %d", v);
+        console2.log("v: %s", Strings.toHexString(uint256(v)));
         console2.log("r: %s", Strings.toHexString(uint256(r)));
         console2.log("s: %s", Strings.toHexString(uint256(s)));
 
