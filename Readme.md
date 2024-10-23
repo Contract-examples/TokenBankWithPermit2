@@ -1,4 +1,4 @@
-# Token bank
+# Token bank with permit
 
 ### Create a ``.env`` file
 ```
