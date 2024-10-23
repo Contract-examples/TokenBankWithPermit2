@@ -2,7 +2,7 @@
 
 ## Test
 ```
-forge test -vv
+forge test -vv --match-test=testPermitDeposit
 ```
 
 ## The result of testing
