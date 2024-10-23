@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
-import "../src/SimpleToken.sol";
+import "../src/SimpleToken2612.sol";
 
 contract DistributeSimpleTokenScript is Script {
     function setUp() public { }
@@ -17,7 +17,7 @@ contract DistributeSimpleTokenScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        SimpleToken token = SimpleToken(tokenAddress);
+        SimpleToken2612 token = SimpleToken2612(tokenAddress);
 
         uint256 amountToDistribute = 1000 * 10 ** 18; // distribute 1000 tokens
 

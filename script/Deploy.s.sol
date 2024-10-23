@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
 import "../src/TokenBank.sol";
-import "../src/SimpleToken.sol";
+import "../src/SimpleToken2612.sol";
 
 contract DeployTokenBankAndTokenScript is Script {
     function setUp() public { }
@@ -16,7 +16,8 @@ contract DeployTokenBankAndTokenScript is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // deploy SimpleToken
-        SimpleToken token = new SimpleToken(1_000_000 * 10 ** 18); // 1,000,000 tokens
+        SimpleToken2612 token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18); // 1,000,000
+            // tokens
         console2.log("SimpleToken deployed to:", address(token));
 
         // deploy TokenBank

@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
-import "../src/SimpleToken.sol";
+import "../src/SimpleToken2612.sol";
 import "../src/TokenBank.sol";
 
 contract WithdrawFromTokenBankScript is Script {
@@ -17,7 +17,7 @@ contract WithdrawFromTokenBankScript is Script {
 
         vm.startBroadcast(userPrivateKey);
 
-        SimpleToken token = SimpleToken(tokenAddress);
+        SimpleToken2612 token = SimpleToken2612(tokenAddress);
         TokenBank bank = TokenBank(bankAddress);
 
         uint256 amountToWithdraw = 1 * 10 ** 18; // withdraw 1 tokens

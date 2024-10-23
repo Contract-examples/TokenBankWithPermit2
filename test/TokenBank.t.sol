@@ -3,17 +3,17 @@ pragma solidity ^0.8.28;
 
 import "forge-std/Test.sol";
 import "../src/TokenBank.sol";
-import "../src/SimpleToken.sol";
+import "../src/SimpleToken2612.sol";
 
 contract TokenBankTest is Test {
     TokenBank public bank;
-    SimpleToken public token;
+    SimpleToken2612 public token;
     address public user1;
     address public user2;
     address public user3;
 
     function setUp() public {
-        token = new SimpleToken(1_000_000 * 10 ** 18); // 1,000,000 tokens
+        token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
         bank = new TokenBank(address(token));
         user1 = address(0x1);
         user2 = address(0x2);
