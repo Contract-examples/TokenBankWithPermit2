@@ -11,9 +11,9 @@ contract TokenBank {
     using Address for address;
 
     // token
-    IERC20 public token;
-    IERC20Permit public tokenPermit;
-    bool public supportsPermit;
+    IERC20 public immutable token;
+    IERC20Permit public immutable tokenPermit;
+    bool public immutable supportsPermit;
 
     // user => balance
     mapping(address => uint256) public balances;
