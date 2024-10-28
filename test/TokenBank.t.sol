@@ -17,7 +17,7 @@ contract TokenBankTest is Test {
     uint256 public user1PrivateKey;
 
     // Permit2 contract address
-    address constant PERMIT2_ADDRESS = 0x000000000022D473030F116dDEE9F6B43aC78BA3;
+    // address constant PERMIT2_ADDRESS = 0x000000000022D473030F116dDEE9F6B43aC78BA3;
 
     function setUp() public {
         // deploy permit2
