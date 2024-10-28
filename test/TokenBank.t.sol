@@ -4,24 +4,40 @@ pragma solidity ^0.8.28;
 import "forge-std/Test.sol";
 import "forge-std/console2.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@permit2/interfaces/IPermit2.sol";
+import "@permit2/interfaces/ISignatureTransfer.sol";
 import "../src/TokenBank.sol";
 import "../src/SimpleToken2612.sol";
 
 contract TokenBankTest is Test {
     TokenBank public bank;
     SimpleToken2612 public token;
+    IPermit2 public permit2;
     address public user1;
     uint256 public user1PrivateKey;
 
-    function setUp() public {
-        token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
-        bank = new TokenBank(address(token));
+    // Permit2 contract address
+    address constant PERMIT2_ADDRESS = 0x000000000022D473030F116dDEE9F6B43aC78BA3;
 
-        // use a fixed private key to generate the address
+    function setUp() public {
+        // deploy permit2
+        permit2 = IPermit2(deployCode("Permit2.sol:Permit2"));
+        console2.log("permit2");
+        // Deploy token and bank
+        token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
+        bank = new TokenBank(address(token), address(permit2));
+
+        // Setup user1
         user1PrivateKey = 0x3389;
         user1 = vm.addr(user1PrivateKey);
 
+        // Transfer tokens to user1
         token.transfer(user1, 1000 * 10 ** 18);
+
+        // User approves Permit2
+        vm.startPrank(user1);
+        token.approve(address(permit2), type(uint256).max);
+        vm.stopPrank();
     }
 
     function testDeposit() public {
@@ -89,5 +105,65 @@ contract TokenBankTest is Test {
         assertEq(bank.balances(user1), depositAmount, "Deposit amount should match");
         assertEq(token.balanceOf(address(bank)), depositAmount, "Bank should have received the tokens");
         assertEq(token.balanceOf(user1), 500 * 10 ** 18, "User1 should have 500 tokens left");
+    }
+
+    function testDepositWithPermit2() public {
+        uint256 depositAmount = 500 * 10 ** 18;
+        uint256 nonce = 0;
+        uint256 deadline = block.timestamp + 1 hours;
+
+        // Create permit message
+        ISignatureTransfer.PermitTransferFrom memory permit = ISignatureTransfer.PermitTransferFrom({
+            permitted: ISignatureTransfer.TokenPermissions({ token: address(token), amount: depositAmount }),
+            nonce: nonce,
+            deadline: deadline
+        });
+
+        console2.log("Initial user balance: %d", token.balanceOf(user1));
+        console2.log("Initial bank balance: %d", token.balanceOf(address(bank)));
+        console2.log("Permit2 allowance: %d", token.allowance(user1, address(permit2)));
+
+        bytes32 digest = _getPermitTransferFromDigest(permit, address(bank), address(permit2));
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(user1PrivateKey, digest);
+        bytes memory signature = abi.encodePacked(r, s, v);
+
+        // Execute deposit with permit2
+        vm.prank(user1);
+        bank.depositWithPermit2(depositAmount, nonce, deadline, signature);
+
+        // Verify deposit
+        assertEq(bank.balances(user1), depositAmount, "Bank balance should match deposit amount");
+        assertEq(token.balanceOf(address(bank)), depositAmount, "Bank token balance should increase by deposit amount");
+    }
+
+    function _getPermitTransferFromDigest(
+        ISignatureTransfer.PermitTransferFrom memory permit,
+        address spender,
+        address permit2Address
+    )
+        internal
+        view
+        returns (bytes32)
+    {
+        bytes32 DOMAIN_SEPARATOR = IPermit2(permit2Address).DOMAIN_SEPARATOR();
+        console2.log("DOMAIN_SEPARATOR: %s", vm.toString(DOMAIN_SEPARATOR));
+
+        bytes32 typeHash = keccak256(
+            "PermitTransferFrom(TokenPermissions permitted,address spender,uint256 nonce,uint256 deadline)TokenPermissions(address token,uint256 amount)"
+        );
+
+        bytes32 tokenPermissionsHash = keccak256(
+            abi.encode(
+                keccak256("TokenPermissions(address token,uint256 amount)"),
+                permit.permitted.token,
+                permit.permitted.amount
+            )
+        );
+
+        bytes32 structHash =
+            keccak256(abi.encode(typeHash, tokenPermissionsHash, spender, permit.nonce, permit.deadline));
+
+        return keccak256(abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, structHash));
     }
 }
