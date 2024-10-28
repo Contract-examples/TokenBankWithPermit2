@@ -69,8 +69,10 @@ contract TokenBankTest is Test {
         console2.log("deadline: %d", deadline);
 
         // get the nonce
-        uint256 nonce = token.nonces(user1);
-        console2.log("nonce: %d", nonce);
+        uint256 wordPos = 0;
+        uint256 bitmap = permit2.nonceBitmap(user1, wordPos);
+        uint256 nonce = _findNextNonce(bitmap, wordPos);
+        console2.log("nonce:", nonce);
 
         // build the permit data
         bytes32 structHash = keccak256(
@@ -109,7 +111,13 @@ contract TokenBankTest is Test {
 
     function testDepositWithPermit2() public {
         uint256 depositAmount = 500 * 10 ** 18;
-        uint256 nonce = 0;
+
+        // get the nonce
+        uint256 wordPos = 0;
+        uint256 bitmap = permit2.nonceBitmap(user1, wordPos);
+        uint256 nonce = _findNextNonce(bitmap, wordPos);
+        console2.log("nonce:", nonce);
+
         uint256 deadline = block.timestamp + 1 hours;
 
         // Create permit message
@@ -148,6 +156,21 @@ contract TokenBankTest is Test {
         // Verify deposit
         assertEq(bank.balances(user1), depositAmount, "Bank balance should match deposit amount");
         assertEq(token.balanceOf(address(bank)), depositAmount, "Bank token balance should increase by deposit amount");
+    }
+
+    // find the next available nonce
+    function _findNextNonce(uint256 bitmap, uint256 wordPos) internal pure returns (uint256) {
+        // find the first unused bit in the current bitmap
+        uint256 bit;
+        for (bit = 0; bit < 256; bit++) {
+            if ((bitmap & (1 << bit)) == 0) {
+                break;
+            }
+        }
+
+        // calculate the full nonce
+        // nonce = (wordPos << 8) | bit
+        return (wordPos << 8) | bit;
     }
 
     function _getPermitTransferFromDigest(
