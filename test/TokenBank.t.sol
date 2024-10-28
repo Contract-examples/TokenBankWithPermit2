@@ -21,7 +21,7 @@ contract TokenBankTest is Test {
 
     function setUp() public {
         // deploy permit2
-        permit2 = IPermit2(deployCode("Permit2.sol:Permit2"));
+        permit2 = IPermit2(deployCode("../test/Permit2.sol:Permit2"));
         console2.log("permit2");
         // Deploy token and bank
         token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
