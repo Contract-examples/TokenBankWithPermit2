@@ -7,22 +7,19 @@ forge install
 
 ## Test
 ```
-forge test -vv --match-test=testPermitDeposit
+forge test --match-test=testDepositWithPermit2 -vv
 ```
 
 ## The result of testing
 ```
 Ran 1 test for test/TokenBank.t.sol:TokenBankTest
-[PASS] testPermitDeposit() (gas: 206401)
+[PASS] testDepositWithPermit2() (gas: 124719)
 Logs:
-  deadline: 1680224400
-  nonce: 0
-  structHash: 0x7f170ded64521d6a3ec286d8b35492f2dddbc145b265c00f01e88f99121f0596
-  domainSeparator: 0x2ad35347a3f6d1126345130dc2ebe7b6a29fc7cac656e73a68221a1995369d4a
-  digest: 0x79f5abd9d6ca4f3b3cb92be7579219cc848445245ecd941f5cc8495f6c529533
-  v: 0x1b
-  r: 0x0d94134e4f5296fa7b60831c8ac8a91fb8656d8855fcf20f0f396b98a93dbd3c
-  s: 0x088fbc789319d1621a3a2985beb6d6782107e85243373c8d66954848c49ed588
+  permit2
+  Initial user balance: 1000000000000000000000
+  Initial bank balance: 0
+  Permit2 allowance: 115792089237316195423570985008687907853269984665640564039457584007913129639935
+  DOMAIN_SEPARATOR: 0x01eadfe56143d8d1f420bcedaec8631185e5b833c351845caa4803a35fb9837a
 
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.90ms (1.04ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.93ms (691.10µs CPU time)
 ```
