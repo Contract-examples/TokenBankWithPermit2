@@ -1,5 +1,10 @@
 # Token bank with uniswap(permit2)
 
+## Git
+```
+git submodule update --init --recursive --force
+```
+
 ## Test
 ```
 forge test -vv --match-test=testPermitDeposit
