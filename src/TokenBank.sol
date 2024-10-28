@@ -74,8 +74,19 @@ contract TokenBank {
             revert DepositTooLow();
         }
 
+        // get balance before
+        uint256 balanceBefore = token.balanceOf(address(this));
+
         // transfer token from user to contract (safe transfer)
         token.safeTransferFrom(msg.sender, address(this), amount);
+
+        // get balance after
+        uint256 balanceAfter = token.balanceOf(address(this));
+
+        // if balance after is less than balance before, revert
+        if (balanceAfter < balanceBefore) {
+            revert TransferFailedForDeposit();
+        }
 
         // update balance
         balances[msg.sender] += amount;
@@ -135,9 +146,20 @@ contract TokenBank {
             deadline: deadline
         });
 
+        // get balance before
+        uint256 balanceBefore = token.balanceOf(address(this));
+
         // Create transfer details
         ISignatureTransfer.SignatureTransferDetails memory transferDetails =
             ISignatureTransfer.SignatureTransferDetails({ to: address(this), requestedAmount: amount });
+
+        // get balance after
+        uint256 balanceAfter = token.balanceOf(address(this));
+
+        // if balance after is less than balance before, revert
+        if (balanceAfter < balanceBefore) {
+            revert TransferFailedForDeposit();
+        }
 
         // Execute permit transfer
         permit2.permitTransferFrom(permit, transferDetails, msg.sender, signature);
