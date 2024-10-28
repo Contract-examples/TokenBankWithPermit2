@@ -7,7 +7,7 @@ forge install
 
 ## Test
 ```
-forge test -vv --match-test=testPermitDeposit
+forge test --match-test=testDepositWithPermit2 -vv
 ```
 
 ## The result of testing
