@@ -2,6 +2,8 @@
 pragma solidity ^0.8.28;
 
 import "forge-std/Script.sol";
+import "forge-std/console2.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@permit2/interfaces/IPermit2.sol";
 import "@permit2/interfaces/ISignatureTransfer.sol";
 import "../src/TokenBank.sol";
@@ -30,7 +32,7 @@ contract InteractionScript is Script {
         uint256 wordPos = 0;
         uint256 bitmap = permit2.nonceBitmap(user, wordPos);
         uint256 nonce = _findNextNonce(bitmap, wordPos);
-        console2.log("Using nonce:", nonce);
+        console2.log("nonce:", nonce);
 
         // Set deadline
         uint256 deadline = block.timestamp + 1 hours;
@@ -44,12 +46,18 @@ contract InteractionScript is Script {
 
         // Generate signature
         bytes32 digest = _getPermitTransferFromDigest(permit, BANK_ADDRESS, PERMIT2_ADDRESS);
+        console2.log("digest: %s", Strings.toHexString(uint256(digest)));
 
         // Sign the digest
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(privateKey, digest);
+        console2.log("v: %s", Strings.toHexString(uint256(v)));
+        console2.log("r: %s", Strings.toHexString(uint256(r)));
+        console2.log("s: %s", Strings.toHexString(uint256(s)));
 
         // Encode the signature
         bytes memory signature = abi.encodePacked(r, s, v);
+        console2.log("signature:");
+        console2.logBytes(signature);
 
         // Log initial states
         console2.log("User address:", user);
