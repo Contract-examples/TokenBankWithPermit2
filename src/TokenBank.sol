@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
+import "@permit2/interfaces/IPermit2.sol";
+import "@permit2/interfaces/ISignatureTransfer.sol";
 
 contract TokenBank {
     using SafeERC20 for IERC20;
@@ -29,8 +31,12 @@ contract TokenBank {
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
 
-    constructor(address _token) {
+    // permit2 contract
+    IPermit2 public immutable permit2;
+
+    constructor(address _token, address _permit2) {
         token = IERC20(_token);
+        permit2 = IPermit2(_permit2);
 
         // check if the token supports permit
         supportsPermit = _isPermitSupported(_token);
@@ -114,5 +120,32 @@ contract TokenBank {
 
         // deposit
         deposit(amount);
+    }
+
+    // permit2 deposit
+    function depositWithPermit2(uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) external {
+        if (amount == 0) {
+            revert DepositTooLow();
+        }
+
+        // Create permit message
+        ISignatureTransfer.PermitTransferFrom memory permit = ISignatureTransfer.PermitTransferFrom({
+            permitted: ISignatureTransfer.TokenPermissions({ token: address(token), amount: amount }),
+            nonce: nonce,
+            deadline: deadline
+        });
+
+        // Create transfer details
+        ISignatureTransfer.SignatureTransferDetails memory transferDetails =
+            ISignatureTransfer.SignatureTransferDetails({ to: address(this), requestedAmount: amount });
+
+        // Execute permit transfer
+        permit2.permitTransferFrom(permit, transferDetails, msg.sender, signature);
+
+        // update balance
+        balances[msg.sender] += amount;
+
+        // emit event
+        emit Deposit(msg.sender, amount);
     }
 }
