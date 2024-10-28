@@ -11,6 +11,7 @@
     "solidity.remappings": [
         "@openzeppelin/=lib/openzeppelin-contracts/",
         "@solmate/=lib/solmate/src/",
-        "@forge/=lib/forge-std/src/"
+        "@forge/=lib/forge-std/src/",
+        "@permit2/=lib/permit2/src/"
     ]
 }
