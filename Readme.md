@@ -37,7 +37,7 @@ Ran 1 test suite in 9.35ms (2.39ms CPU time): 1 tests passed, 0 failed, 0 skippe
 forge script script/Deploy.s.sol:DeployScript --rpc-url arbitrum_sepolia --broadcast --verify -vvvv
 ```
 
-## Result
+## Result of deploy
 ```
 https://sepolia.arbiscan.io/address/0xdB3eF3cB3079C93A276A2B4B69087b8801727f64
 ```
@@ -47,7 +47,7 @@ https://sepolia.arbiscan.io/address/0xdB3eF3cB3079C93A276A2B4B69087b8801727f64
 forge script script/Interaction.s.sol:InteractionScript --rpc-url arbitrum_sepolia --broadcast -vvvv
 ```
 
-## Result
+## Result of interaction
 ```
 https://sepolia.arbiscan.io/tx/0xd1394ccc4035f67c46ac8e4eb6e064d1e091eefbca00e031b031000f1109a1dc
 https://sepolia.arbiscan.io/tx/0x6fca3540567816abaa401de489d8a4987389c34212467421700fe18b5bf3bf29
