@@ -1,8 +1,8 @@
 # Token bank with uniswap(permit2)
 
-## Git
+## Install deps
 ```
-git submodule update --init --recursive --force
+forge install
 ```
 
 ## Test
