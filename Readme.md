@@ -31,3 +31,8 @@ Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.39ms (984.30µs C
 
 Ran 1 test suite in 9.35ms (2.39ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 ```
+
+## Deploy
+```
+forge script script/Deploy.s.sol:DeployScript --rpc-url arbitrum_sepolia --broadcast --verify -vvvv
+```
