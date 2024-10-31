@@ -1,0 +1,10 @@
+[
+  "function deposit(uint256 amount) public",
+  "function withdraw(uint256 amount) external",
+  "function getBalance() public view returns (uint256)",
+  "function getDepositAmount(address depositor) public view returns (uint256)",
+  "function balances(address) public view returns (uint256)",
+  "function depositWithPermit2(uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) external",
+  "event Deposit(address indexed user, uint256 amount)",
+  "event Withdraw(address indexed user, uint256 amount)"
+]
