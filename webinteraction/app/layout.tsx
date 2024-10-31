@@ -3,15 +3,15 @@
 import { WagmiProvider, createConfig, http } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { arbitrumSepolia } from 'viem/chains'
-import localFont from "next/font/local"
-import "./globals.css"
+import localFont from 'next/font/local'
+import './globals.css'
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  display: "swap",
-  weight: "100 900",
-});
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+  display: 'swap',
+  weight: '100 900',
+})
 
 // Create query client
 const queryClient = new QueryClient()
@@ -20,8 +20,8 @@ const queryClient = new QueryClient()
 const config = createConfig({
   chains: [arbitrumSepolia],
   transports: {
-    [arbitrumSepolia.id]: http()
-  }
+    [arbitrumSepolia.id]: http(),
+  },
 })
 
 export default function RootLayout({

@@ -3,13 +3,16 @@
 import { useState, useEffect } from 'react'
 import TokenBankABI from './abi/TokenBank.json'
 import Permit2ABI from './abi/Permit2.json'
-import { useAccount, useConnect, useDisconnect, useChainId, useWalletClient, usePublicClient } from 'wagmi'
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useChainId,
+  useWalletClient,
+  usePublicClient,
+} from 'wagmi'
 import { injected } from 'wagmi/connectors'
-import { 
-  parseEther,
-  type Hash,
-  type Address 
-} from 'viem'
+import { parseEther, type Hash, type Address } from 'viem'
 
 export default function Home() {
   // Contract addresses
@@ -57,7 +60,7 @@ export default function Home() {
         address: PERMIT2_ADDRESS,
         abi: Permit2ABI,
         functionName: 'nonceBitmap',
-        args: [address as Address, wordPos]
+        args: [address as Address, wordPos],
       })
 
       const nonce = findNextNonce(bitmap as bigint, wordPos)
@@ -69,7 +72,7 @@ export default function Home() {
       const domain = {
         name: 'Permit2',
         chainId,
-        verifyingContract: PERMIT2_ADDRESS
+        verifyingContract: PERMIT2_ADDRESS,
       }
 
       const types = {
@@ -77,22 +80,22 @@ export default function Home() {
           { name: 'permitted', type: 'TokenPermissions' },
           { name: 'spender', type: 'address' },
           { name: 'nonce', type: 'uint256' },
-          { name: 'deadline', type: 'uint256' }
+          { name: 'deadline', type: 'uint256' },
         ],
         TokenPermissions: [
           { name: 'token', type: 'address' },
-          { name: 'amount', type: 'uint256' }
-        ]
+          { name: 'amount', type: 'uint256' },
+        ],
       }
 
       const value = {
         permitted: {
           token: TOKEN_ADDRESS,
-          amount: amountWei
+          amount: amountWei,
         },
         spender: BANK_ADDRESS,
         nonce,
-        deadline
+        deadline,
       }
 
       // Get signature
@@ -109,12 +112,12 @@ export default function Home() {
         address: BANK_ADDRESS,
         abi: TokenBankABI,
         functionName: 'depositWithPermit2',
-        args: [amountWei, nonce, deadline, signature as Hash]
+        args: [amountWei, nonce, deadline, signature as Hash],
       })
 
       // Wait for transaction
       await publicClient.waitForTransactionReceipt({ hash })
-      
+
       setSuccess('Deposit successful!')
     } catch (err: any) {
       console.error('Error:', err)
@@ -142,7 +145,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
         <h1 className="text-4xl font-bold mb-8">TokenBank Deposit</h1>
-        
+
         {!isConnected ? (
           <button
             onClick={() => connect({ connector: injected() })}
