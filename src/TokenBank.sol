@@ -26,6 +26,7 @@ contract TokenBank {
     error TransferFailedForDeposit();
     error TransferFailedForWithdraw();
     error PermitNotSupported();
+    error WithdrawTooLow();
 
     // event
     event Deposit(address indexed user, uint256 amount);
@@ -96,13 +97,29 @@ contract TokenBank {
     }
 
     function withdraw(uint256 amount) external {
+        // if amount is 0, revert
+        if (amount == 0) {
+            revert WithdrawTooLow();
+        }
+
         // if amount > balance, revert
         if (amount > balances[msg.sender]) {
             revert InsufficientBalance();
         }
 
+        // get balance before
+        uint256 balanceBefore = token.balanceOf(address(this));
+
         // transfer token from contract to user (safe transfer)
         token.safeTransfer(msg.sender, amount);
+
+        // get balance after
+        uint256 balanceAfter = token.balanceOf(address(this));
+
+        // if balance after is greater than balance before, revert
+        if (balanceAfter > balanceBefore) {
+            revert TransferFailedForWithdraw();
+        }
 
         // update balance
         balances[msg.sender] -= amount;
