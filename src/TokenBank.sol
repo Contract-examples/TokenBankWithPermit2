@@ -163,12 +163,15 @@ contract TokenBank {
             deadline: deadline
         });
 
-        // get balance before
-        uint256 balanceBefore = token.balanceOf(address(this));
-
         // Create transfer details
         ISignatureTransfer.SignatureTransferDetails memory transferDetails =
             ISignatureTransfer.SignatureTransferDetails({ to: address(this), requestedAmount: amount });
+
+        // get balance before
+        uint256 balanceBefore = token.balanceOf(address(this));
+
+        // Execute permit transfer
+        permit2.permitTransferFrom(permit, transferDetails, msg.sender, signature);
 
         // get balance after
         uint256 balanceAfter = token.balanceOf(address(this));
@@ -177,9 +180,6 @@ contract TokenBank {
         if (balanceAfter < balanceBefore) {
             revert TransferFailedForDeposit();
         }
-
-        // Execute permit transfer
-        permit2.permitTransferFrom(permit, transferDetails, msg.sender, signature);
 
         // update balance
         balances[msg.sender] += amount;
