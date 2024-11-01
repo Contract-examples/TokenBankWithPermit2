@@ -5,6 +5,7 @@ import "forge-std/Script.sol";
 import "../src/SimpleToken2612.sol";
 import "../src/TokenBank.sol";
 
+// forge script script/Deploy.s.sol:DeployScript --rpc-url arbitrum_sepolia --broadcast --verify -vvvv
 contract DeployScript is Script {
     // SALT
     bytes32 constant SALT = bytes32(uint256(0x0000000000000000000000000000000000000000d3bf2663da51c10215000003));
