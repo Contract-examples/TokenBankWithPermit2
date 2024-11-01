@@ -187,4 +187,7 @@ contract TokenBank {
         // emit event
         emit Deposit(msg.sender, amount);
     }
+
+    // receive ETH
+    receive() external payable { }
 }

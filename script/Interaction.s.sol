@@ -13,10 +13,10 @@ contract InteractionScript is Script {
     // Contract addresses
     address constant BANK_ADDRESS = 0xdB3eF3cB3079C93A276A2B4B69087b8801727f64;
     address constant PERMIT2_ADDRESS = 0x000000000022D473030F116dDEE9F6B43aC78BA3;
-    address constant TOKEN_ADDRESS = 0xe4Cec63058807C50C95CEF99b0Ab5A9831610386;
+    address payable TOKEN_ADDRESS = payable(0xe4Cec63058807C50C95CEF99b0Ab5A9831610386);
 
     // Contract interfaces
-    TokenBank bank = TokenBank(BANK_ADDRESS);
+    TokenBank bank = TokenBank(payable(BANK_ADDRESS));
     SimpleToken2612 token = SimpleToken2612(TOKEN_ADDRESS);
     IPermit2 permit2 = IPermit2(PERMIT2_ADDRESS);
 
