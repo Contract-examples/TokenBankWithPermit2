@@ -48,13 +48,13 @@ export default function Home() {
   const checkAndApprovePermit2 = async (amount: bigint) => {
     if (!walletClient || !address) throw new Error('Wallet not connected')
     if (!publicClient) throw new Error('Public client not available')
-      
-    const allowance = await publicClient.readContract({
+
+    const allowance = (await publicClient.readContract({
       address: TOKEN_ADDRESS,
       abi: ERC20ABI,
       functionName: 'allowance',
       args: [address as Address, PERMIT2_ADDRESS],
-    }) as bigint
+    })) as bigint
 
     if (allowance < amount) {
       setIsApproving(true)
@@ -179,7 +179,7 @@ export default function Home() {
       const balance = await publicClient.readContract({
         address: BANK_ADDRESS,
         abi: TokenBankABI,
-        functionName: 'getBalance'
+        functionName: 'getBalance',
       })
 
       // format balance
@@ -210,7 +210,7 @@ export default function Home() {
         ) : (
           <div className="space-y-4">
             <p>Connected: {address}</p>
-            
+
             {/* check bank balance */}
             <div className="flex items-center space-x-4">
               <button
@@ -220,9 +220,7 @@ export default function Home() {
                 Check Balance
               </button>
               {bankBalance && (
-                <p className="text-lg">
-                  Bank Balance: {bankBalance} Tokens
-                </p>
+                <p className="text-lg">Bank Balance: {bankBalance} Tokens</p>
               )}
             </div>
 
@@ -240,8 +238,11 @@ export default function Home() {
                 disabled={loading || isApproving}
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
-                {isApproving ? 'Approving Permit2...' : 
-                 loading ? 'Processing...' : 'Deposit with Permit2'}
+                {isApproving
+                  ? 'Approving Permit2...'
+                  : loading
+                    ? 'Processing...'
+                    : 'Deposit with Permit2'}
               </button>
             </div>
 
@@ -251,11 +252,9 @@ export default function Home() {
               </p>
             )}
             {approveSuccess && (
-              <p className="text-green-500">
-                Successfully approved Permit2!
-              </p>
+              <p className="text-green-500">Successfully approved Permit2!</p>
             )}
-            
+
             {error && <p className="text-red-500">{error}</p>}
             {success && <p className="text-green-500">{success}</p>}
             <button
