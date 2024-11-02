@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
-import "@permit2/interfaces/IPermit2.sol";
-import "@permit2/interfaces/ISignatureTransfer.sol";
+import "@permit2-light-sdk/sdk/IPermit2.sol";
+import "@permit2-light-sdk/sdk/ISignatureTransfer.sol";
 
 contract TokenBank {
     using SafeERC20 for IERC20;

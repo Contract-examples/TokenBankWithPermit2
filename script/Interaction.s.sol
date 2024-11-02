@@ -4,8 +4,8 @@ pragma solidity ^0.8.28;
 import "forge-std/Script.sol";
 import "forge-std/console2.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@permit2/interfaces/IPermit2.sol";
-import "@permit2/interfaces/ISignatureTransfer.sol";
+import "@permit2-light-sdk/sdk/IPermit2.sol";
+import "@permit2-light-sdk/sdk/ISignatureTransfer.sol";
 import "../src/TokenBank.sol";
 import "../src/SimpleToken2612.sol";
 

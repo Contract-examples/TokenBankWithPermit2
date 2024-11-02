@@ -4,8 +4,8 @@ pragma solidity ^0.8.28;
 import "forge-std/Test.sol";
 import "forge-std/console2.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@permit2/interfaces/IPermit2.sol";
-import "@permit2/interfaces/ISignatureTransfer.sol";
+import "@permit2-light-sdk/sdk/IPermit2.sol";
+import "@permit2-light-sdk/sdk/ISignatureTransfer.sol";
 import "../src/TokenBank.sol";
 import "../src/SimpleToken2612.sol";
 
@@ -21,7 +21,7 @@ contract TokenBankTest is Test {
 
     function setUp() public {
         // deploy permit2
-        permit2 = IPermit2(deployCode("../test/Permit2.sol:Permit2"));
+        permit2 = IPermit2(deployCode("../lib/permit2-light-sdk/abi/Permit2.sol:Permit2"));
         console2.log("permit2");
         // Deploy token and bank
         token = new SimpleToken2612("SimpleToken2612", "STK2612", 1_000_000 * 10 ** 18);
