@@ -1,3 +1,4 @@
-TokenBankTest:testDeposit() (gas: 79013)
-TokenBankTest:testPermitDeposit() (gas: 206401)
-TokenBankTest:testWithdraw() (gas: 88141)
+TokenBankTest:testDeposit() (gas: 78576)
+TokenBankTest:testDepositWithPermit2() (gas: 170010)
+TokenBankTest:testPermitDeposit() (gas: 185189)
+TokenBankTest:testWithdraw() (gas: 89604)

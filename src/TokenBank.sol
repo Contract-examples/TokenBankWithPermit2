@@ -5,10 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
 import "@permit2-light-sdk/sdk/IPermit2.sol";
 import "@permit2-light-sdk/sdk/ISignatureTransfer.sol";
 
-contract TokenBank {
+contract TokenBank is ReentrancyGuardTransient {
     using SafeERC20 for IERC20;
     using Address for address;
 
@@ -69,7 +70,7 @@ contract TokenBank {
         }
     }
 
-    function deposit(uint256 amount) public {
+    function deposit(uint256 amount) public nonReentrant {
         // if amount is 0, revert
         if (amount == 0) {
             revert DepositTooLow();
@@ -96,7 +97,7 @@ contract TokenBank {
         emit Deposit(msg.sender, amount);
     }
 
-    function withdraw(uint256 amount) external {
+    function withdraw(uint256 amount) external nonReentrant {
         // if amount is 0, revert
         if (amount == 0) {
             revert WithdrawTooLow();
@@ -151,7 +152,15 @@ contract TokenBank {
     }
 
     // permit2 deposit
-    function depositWithPermit2(uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) external {
+    function depositWithPermit2(
+        uint256 amount,
+        uint256 nonce,
+        uint256 deadline,
+        bytes calldata signature
+    )
+        external
+        nonReentrant
+    {
         if (amount == 0) {
             revert DepositTooLow();
         }
